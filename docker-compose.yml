@@ -1,0 +1,20 @@
+version: "3"
+services:
+  app:
+    container_name: node
+    image: node:10 
+    user: node 
+    working_dir: "/app" 
+    ports:
+    - "127.0.0.1:3000:3000" 
+    volumes:
+    - ./:/app
+    command: "npx pm2 start ecosystem.config.js --no-daemon --env=production" 
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+
+
+
