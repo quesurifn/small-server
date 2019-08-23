@@ -1,13 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const Users  = require('../models/Users');
+//const Users  = require('../models/Users');
+const DatabaseDriver = require('../models/DatabaseDriver')
+const db = new DatabaseDriver()
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
   let users = null;
   try {
-    users = await Users.find({}).lean().exec();
+    //users = await Users.find({}).lean().exec();
+    users = await db.find({})
   } catch(err) {
     next(err)
   }
@@ -43,8 +46,8 @@ router.put('/', async (req, res, next) => {
 router.delete('/', async (req, res, next) => {
   let users = null;
   try {
-    await Users.findByIdAndRemove(req.body.id)
-    users = await Users.findById(req.body.id)
+    await db.delete({...body})
+    users = await db.find({})
   } catch(err) {
     next(err)
   }
