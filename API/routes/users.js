@@ -19,9 +19,10 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  let user = null;
+  let users = null;
   try {
-    user = await Users.create(req.body)
+    //user = await Users.create(req.body)
+    users = await db.add(req.body)
   } catch(err) {
     next(err)
   } 
@@ -47,7 +48,7 @@ router.delete('/', async (req, res, next) => {
   let users = null;
   try {
     await db.delete({...body})
-    users = await db.find({})
+    users = await db.find()
   } catch(err) {
     next(err)
   }
