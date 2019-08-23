@@ -1,7 +1,6 @@
 const fs = require('fs') 
 
-class DatabaseService {
-
+const DatabaseDriver = class DatabaseService {
     constructor() {
         this.path = './Database.json'
     }
@@ -98,3 +97,5 @@ class DatabaseService {
         })
     }
 }
+
+module.exports = DatabaseDriver;

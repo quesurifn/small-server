@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Users  = require('../models/Users');
+
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
   let users = null;
@@ -25,6 +26,7 @@ router.post('/', async (req, res, next) => {
   req.json(user)
 })
 
+/*
 router.put('/', async (req, res, next) => {
   let user = null;
   const id = req.body._id
@@ -35,7 +37,7 @@ router.put('/', async (req, res, next) => {
     next(err)
   }
   res.json(user)
-})
+})*/
 
 
 router.delete('/', async (req, res, next) => {
