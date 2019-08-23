@@ -70,6 +70,7 @@ const DatabaseDriver = class DatabaseService {
             if(Object.keys(obj).length === 0) {
                 try {
                     await this._writeFile([])
+                    resolve({removed: database.length})
                 } catch(e) {
                     console.error(e)
                     reject(e)
@@ -92,7 +93,7 @@ const DatabaseDriver = class DatabaseService {
                 reject(e);
             }
             
-            resolve({removed})
+            resolve({removed});
 
         })
     }
