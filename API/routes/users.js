@@ -47,7 +47,7 @@ router.put('/', async (req, res, next) => {
 router.delete('/', async (req, res, next) => {
   let users = null;
   try {
-    await db.delete(...body);
+    await db.delete(req.body);
     users = await db.find();
   } catch(err) {
     next(err);
