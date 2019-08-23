@@ -97,6 +97,30 @@ const DatabaseDriver = class DatabaseService {
 
         })
     }
+
+    add(obj) {
+        return new Promise((resolve, reject) => {
+            let database = null;
+
+            try {   
+                database = await this._readFile()
+            } catch(e) {
+                console.error(e);
+                reject(e);
+            }
+
+            // Add to DB Array
+            database.push(obj);
+
+            try {
+                await this._writeFile(database)
+                resolve(database)
+            } catch(e) {
+                console.error(e)
+                reject(e)
+            } 
+        })
+    }
 }
 
 module.exports = DatabaseDriver;
