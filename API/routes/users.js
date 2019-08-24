@@ -12,6 +12,7 @@ router.get('/', async (req, res, next) => {
     //users = await Users.find({}).lean().exec();
     users = await db.find({});
   } catch(err) {
+    console.error(err)
     next(err);
   }
 
@@ -24,10 +25,11 @@ router.post('/', async (req, res, next) => {
     //user = await Users.create(req.body)
     users = await db.add(req.body);
   } catch(err) {
+    console.error(err)
     next(err);
   } 
 
-  req.json(user);
+  res.json(users);
 })
 
 /*
@@ -48,10 +50,12 @@ router.delete('/', async (req, res, next) => {
   let users = null;
   try {
     await db.delete(req.body);
-    users = await db.find();
+    users = await db.find({});
   } catch(err) {
+    console.error(err);
     next(err);
   }
+  res.json(users);
 })
 
 

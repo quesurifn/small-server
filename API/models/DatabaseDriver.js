@@ -2,7 +2,7 @@ const fs = require('fs')
 
 const DatabaseDriver = class DatabaseService {
     constructor() {
-        this.path = './Database.json'
+        this.path = `API/models/Database.json`  
     }
 
     // If this was production we'd use transform streams otherwise the memory consumption would crash it very easily
@@ -10,7 +10,8 @@ const DatabaseDriver = class DatabaseService {
         return new Promise((resolve, reject) => {
             fs.readFile(this.path, (err, data) => {
                 if(err) reject(err);
-                resolve(data.toJSON());
+                const returnData = Buffer.from(data).toString('utf8')
+                resolve(JSON.parse(returnData));
             })
         })
     }
@@ -25,7 +26,7 @@ const DatabaseDriver = class DatabaseService {
     }
 
 
-    find(obj) {
+    find(obj = {}) {
         return new Promise(async (resolve, reject) => {
             try {
                 const database = await this._readFile();
@@ -37,10 +38,10 @@ const DatabaseDriver = class DatabaseService {
                     } else if(obj.name) {
                         return obj.name === e.name;
                     } else {
-                        resolve(database);
+                        return e;
                     }
-                    resolve(returnValue);
                 })
+                resolve(returnValue);
             } catch(e) {
                 console.error(e);
                 reject(e);
@@ -48,12 +49,14 @@ const DatabaseDriver = class DatabaseService {
         })
     }
 
-    delete(obj) {
+    delete(obj = {}) {
         return new Promise(async (resolve, reject) => {
             let database = null, returnValue = null, removeValue = null;
             
             try {
                 database = await this._readFile();
+                console.log("database")
+                console.log(database)
             } catch(e) {
                 console.error(e);
                 reject(e);
@@ -61,44 +64,51 @@ const DatabaseDriver = class DatabaseService {
    
             try {
                 removeValue = await this.find(obj);
+                console.log("removeValue")
+                console.log(removeValue)
+       
             } catch(e) {
                 console.error(e);
                 reject(e)
             }
-
+            
             // Short circut clearing DB for performance reasons
             if(Object.keys(obj).length === 0) {
+                console.log('no')
                 try {
-                    await this._writeFile([])
-                    resolve({removed: database.length})
-                } catch(e) {
-                    console.error(e)
-                    reject(e)
+                    await this._writeFile(JSON.stringify([]));
+                    resolve({removed: database.length});
+                } catch(e) { 
+                    console.error(e);
+                    reject(e);
                 }
             }
  
-            const returnValue = database.map((e) => {
-                const elementIsInArray = removeValue.find((el) => e === el);
-                if(elementIsInArray === undefined) {
+            returnValue = database.map((e) => {
+                console.log(Object.is(removeValue[0], e))
+                if(Object.is(removeValue[0], e) ) {
                     return e;
                 }
-            });
-            
-            const removed = database.length - returnValue.length;
+            }).filter(e => e !== null && e !== undefined);
 
-            try { 
-                await this._writeFile(returnValue);
+            console.log("returnValue")
+            console.log(returnValue)
+            const removed = database.length - returnValue.length;
+            console.log(removed)
+            try {   
+                await this._writeFile(JSON.stringify(returnValue));
+                resolve({removed});
             } catch(e) {
                 console.error(e);
                 reject(e);
             }
             
-            resolve({removed});
+    
 
         })
     }
 
-    add(obj) {
+    add(obj = {}) {
         return new Promise(async (resolve, reject) => {
             let database = null;
 
@@ -113,7 +123,7 @@ const DatabaseDriver = class DatabaseService {
             database.push(obj);
 
             try {
-                await this._writeFile(database)
+                await this._writeFile(JSON.stringify(database))
                 resolve(database)
             } catch(e) {
                 console.error(e)

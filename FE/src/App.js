@@ -10,6 +10,8 @@ class App extends React.Component {
         addStudent: false,
       }
 
+      this.apiPath = 'http://localhost:3000/users/';
+
       this.handleStudentDelete = this.handleStudentDelete.bind(this)
       this.handleStudentAdd = this.handleStudentAdd.bind(this)
       this.handleAddStudentChange = this.handleAddStudentChange.bind(this)
@@ -21,7 +23,7 @@ class App extends React.Component {
     try  {
       let response = null; 
       let data = null;
-      response = await fetch('localhost:3000/users/', {method: "delete", body: JSON.stringify({_id})})
+      response = await fetch(this.apiPath, {method: "delete", body: JSON.stringify({_id})})
       response = response.json()
     } catch(e) {
       console.error(e)
@@ -33,7 +35,7 @@ class App extends React.Component {
     try  {
       let response = null; 
       let data = null;
-      response = await fetch('localhost:3000/users/', {method: "post", body: JSON.stringify({_id})})
+      response = await fetch(this.apiPath, {method: "post", body: JSON.stringify({_id})})
       data = response.json()
       this.setState({apiSuccess: data})
     } catch(e) {
@@ -52,7 +54,7 @@ class App extends React.Component {
     try {
       let response = null; 
       let data = null;
-      response = await fetch('localhost:3000/users/')
+      response = await fetch(this.apiPath)
       data = response.json()
       this.setState({ apiSuccess: data })
     } catch(e) {
