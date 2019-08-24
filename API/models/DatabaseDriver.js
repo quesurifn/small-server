@@ -99,7 +99,7 @@ const DatabaseDriver = class DatabaseService {
     }
 
     add(obj) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             let database = null;
 
             try {   

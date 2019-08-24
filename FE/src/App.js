@@ -1,7 +1,4 @@
 import React from 'react';
-
-import simpleAction from './actions/index';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends React.Component {
@@ -32,7 +29,7 @@ class App extends React.Component {
     }
   }
 
-  async handleStudentAdd(id) {
+  async handleStudentAdd(_id) {
     try  {
       let response = null; 
       let data = null;
@@ -72,13 +69,13 @@ class App extends React.Component {
 
           <div className="col-6">
             <h1>Students</h1>
-            {this.state.api_success.map((e) => {
+            {this.state.apiSuccess && this.state.api_success.map((e) => (
               <div style={{display: "inline"}}>
                 <p>{e.name}</p>
                 <p>{e.dob}</p>
-                <button onClick={() => this.handleStudentDelete(e._id)}>Delete</button>
+                <button onClick={()=>this.handleStudentDelete(e._id)}>Delete</button>
               </div>
-            })}
+            ))}
           </div>
 
           <div className="col-6">
@@ -95,7 +92,5 @@ class App extends React.Component {
     );
   }
 }
-  
-
 
 export default App;
