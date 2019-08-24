@@ -55,8 +55,6 @@ const DatabaseDriver = class DatabaseService {
             
             try {
                 database = await this._readFile();
-                console.log("database")
-                console.log(database)
             } catch(e) {
                 console.error(e);
                 reject(e);
@@ -64,9 +62,6 @@ const DatabaseDriver = class DatabaseService {
    
             try {
                 removeValue = await this.find(obj);
-                console.log("removeValue")
-                console.log(removeValue)
-       
             } catch(e) {
                 console.error(e);
                 reject(e)
@@ -74,7 +69,6 @@ const DatabaseDriver = class DatabaseService {
             
             // Short circut clearing DB for performance reasons
             if(Object.keys(obj).length === 0) {
-                console.log('no')
                 try {
                     await this._writeFile(JSON.stringify([]));
                     resolve({removed: database.length});
@@ -91,10 +85,8 @@ const DatabaseDriver = class DatabaseService {
                 }
             }).filter(e => e !== null && e !== undefined);
 
-            console.log("returnValue")
-            console.log(returnValue)
             const removed = database.length - returnValue.length;
-            console.log(removed)
+
             try {   
                 await this._writeFile(JSON.stringify(returnValue));
                 resolve({removed});
