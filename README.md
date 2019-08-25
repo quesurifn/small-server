@@ -10,6 +10,8 @@
 - Run `npm build && npm deploy && npm serve` 
 - Use at your leisure 
 
+Note: Application is served at http://localhost:4000
+
 ## Helpful Links
 - Cygwin + Node https://howtonode.org/how-to-install-nodejs
 - Node Version Manager https://github.com/nvm-sh/nvm
