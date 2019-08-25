@@ -26,8 +26,8 @@ class App extends React.Component {
       let response = null; 
       let data = null;
       response = await fetch(this.apiPath, {method: "delete", body: JSON.stringify(obj), headers: this.apiHeaders})
-      data = response.json()
-      this.setState({apiSuccess:data})
+      data = await response.json()
+      this.setState({apiSuccess: data})
     } catch(e) {
       console.error(e)
       this.setState({apiError: e})
@@ -35,13 +35,19 @@ class App extends React.Component {
   }
 
   async handleStudentAdd() {
-
+     
+    try {
       const student = this.state.student
       let response = null; 
       let data = null;
       response = await fetch(this.apiPath, {method: "post", body: JSON.stringify(student), headers: this.apiHeaders})
       data = response.json()
       this.setState({apiSuccess: data, submitted: JSON.stringify(student)})
+    } catch(e) {
+      console.error(e)
+      this.setState({apiError: e})
+    }
+    
     
 
   }
@@ -76,39 +82,41 @@ class App extends React.Component {
 
 
   render() {
+    const formMargin = {margin: "5px 15px"};
+
+    const studentsInsert = this.state.apiSuccess ? this.state.apiSuccess.map((e, idx) => {
+     return  <div key={idx} style={{display: "flex", justifyContent: "center"}}>
+                <p style={formMargin}>{e.name}</p>
+                <p style={formMargin}>{e.dob}</p>
+                <button style={formMargin} className="btn btn-light" onClick={()=>this.handleStudentDelete(e)}>Delete</button>
+            </div>
+    }) : <div>There are no students listed</div>;
 
     return (
       <div className="App container">
         <header className="App-header">
 
-          <div className="col-6">
+          <div>
             <p>Students</p>
-            {this.state.apiSuccess && this.state.apiSuccess.map((e, idx) => (
-              <div style={{display: "inline"}} key={idx}>
-                <p>{e.name}</p>
-                <p>{e.dob}</p>
-                {// This will cause dupes to be deleted too with one click
-                }
-                <button onClick={()=>this.handleStudentDelete(e)}>Delete</button>
-              </div>
-            ))}
+            <div>
+              {studentsInsert}
+            </div>
+
+            <br />
           </div>
 
-          <div className="col-6">
+          <div>
 
             <p>Add a student</p>
-            <form onSubmit={this.handleStudentAdd}>
+            <form onSubmit={this.handleStudentAdd} style={{justifyContent: "center", display: "flex"}}>
             <div className="input-group mb-3">
               <div className="input-group-prepend">
                 <input className="form-control" type="text" placeholder="name" onChange={this.handleAddStudentChange} name="name"/>
-              </div>
-            </div>
-            <div className="input-group mb-3">
-              <div className="input-group-prepend">
                 <input className="form-control" type="text" placeholder="Date of Birth (yyyy-mm-dd)" name="dob" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" onChange={this.handleAddStudentChange} />
+                <button className="btn btn-light" type="submit">Submit</button>
               </div>
             </div>
-            <button className="btn btn-dark" type="submit">Submit</button>
+
             </form>
           </div>
 

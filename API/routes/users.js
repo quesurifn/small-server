@@ -21,7 +21,6 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   let users = null;
-  console.log(req.body)
   try {
     //user = await Users.create(req.body)
     users = await db.add(req.body);
@@ -49,11 +48,9 @@ router.put('/', async (req, res, next) => {
 
 router.delete('/', async (req, res, next) => {
   let users = null;
-  console.log('body')
-  console.log(req.body)
   try {
-    users = await db.delete(req.body);
-    console.log(users)
+    await db.delete(req.body);
+    users = await db.find({});
   } catch(err) {
     console.error(err);
     next(err);

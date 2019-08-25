@@ -1,4 +1,5 @@
 const fs = require('fs') 
+const isEqual = require('../utils/index')
 
 const DatabaseDriver = class DatabaseService {
     constructor() {
@@ -24,7 +25,6 @@ const DatabaseDriver = class DatabaseService {
             })
         })
     }
-
 
     find(obj = {}) {
         return new Promise(async (resolve, reject) => {
@@ -79,8 +79,7 @@ const DatabaseDriver = class DatabaseService {
             }
  
             returnValue = database.map((e) => {
-                console.log(Object.is(removeValue[0], e))
-                if( Object.is(removeValue[0], e) ) {
+                if(! isEqual(removeValue[0], e) ) {
                     return e;
                 }
             }).filter(e => e !== null && e !== undefined);
@@ -95,8 +94,6 @@ const DatabaseDriver = class DatabaseService {
                 reject(e);
             }
             
-    
-
         })
     }
 
