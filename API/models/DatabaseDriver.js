@@ -80,11 +80,11 @@ const DatabaseDriver = class DatabaseService {
  
             returnValue = database.map((e) => {
                 console.log(Object.is(removeValue[0], e))
-                if(Object.is(removeValue[0], e) ) {
+                if( Object.is(removeValue[0], e) ) {
                     return e;
                 }
             }).filter(e => e !== null && e !== undefined);
-
+            
             const removed = database.length - returnValue.length;
 
             try {   

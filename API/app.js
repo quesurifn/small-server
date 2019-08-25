@@ -11,7 +11,8 @@ const usersRouter = require('./routes/users');
 const app = express();
 
 app.use(helmet())
-
+app.use(cors())
+app.set('etag', false); 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
